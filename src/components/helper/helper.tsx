@@ -1,67 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
+import { calculateMovieTime } from '../../functions/calculateMovieTime';
 
-interface MeetingObj {
-  date: string;
-  time: string;
-}
+const meetings = [
+  { date: '2023-10-08', time: '10:00' },
+  { date: '2023-10-08', time: '14:30' },
+  { date: '2023-10-08', time: '12:30' },
+];
 
-interface MovieScheduleObj {
-  date: string;
-  time: string;
-  name: string;
-}
+const movieSchedule = [
+  { date: '2023-10-08', time: '12:00', name: 'Spider-man' },
+  { date: '2023-10-08', time: '15:00', name: 'Shrek' },
+  { date: '2023-10-08', time: '08:00', name: 'Shrek' },
+];
 
 export const Helper: React.FC = () => {
-  function calculateMovieTime(
-    meetings: MeetingObj[],
-    movieSchedule: MovieScheduleObj[]
-  ) {
-    const meetingsTimestamps = meetings.map(meeting =>
-      Date.parse(`${meeting.date}T${meeting.time}`)
-    );
-    const movieScheduleTimestamps = movieSchedule.map(movie => ({
-      timestamp: Date.parse(`${movie.date}T${movie.time}`),
-      name: movie.name,
-    }));
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-    meetingsTimestamps.sort((a, b) => a - b);
-    movieScheduleTimestamps.sort((a, b) => a.timestamp - b.timestamp);
-
-    for (const movie of movieScheduleTimestamps) {
-      let isAvailable = true;
-
-      for (const meetingTime of meetingsTimestamps) {
-        if (Math.abs(movie.timestamp - meetingTime) < 2 * 60 * 60 * 1000) {
-          isAvailable = false;
-          break;
-        }
-      }
-
-      if (isAvailable) {
-        return {
-          time: new Date(movie.timestamp),
-          name: movie.name,
-        };
-      }
-    }
-
-    return 'Нажаль у вас немає вільного часу';
-  }
-
-  const meetings = [
-    { date: '2023-10-08', time: '10:00' },
-    { date: '2023-10-08', time: '14:30' },
-    { date: '2023-10-08', time: '12:30' },
-  ];
-
-  const movieSchedule = [
-    { date: '2023-10-08', time: '12:00', name: 'Spider-man' },
-    { date: '2023-10-08', time: '15:00', name: 'Shrek' },
-    { date: '2023-10-08', time: '08:00', name: 'Shrek' },
-  ];
+  const [events, setEvent] = useState([]);
 
   const optimalTime = calculateMovieTime(meetings, movieSchedule);
   console.log(optimalTime);
+  return (
+    <>
+      <h2>Calculate movie time</h2>
+      <form
+        onSubmit={handleSubmit(data => {
+          console.log(data);
+        })}
+      >
+        <label>
+          Date of event:
+          <input
+            placeholder="2023-10-08"
+            type={'text'}
+            {...register('date', {
+              required: 'This field is required',
+            })}
+          />
+          <p style={{ padding: 0, margin: 0 }}>
+            {errors.date?.message as string}
+          </p>
+        </label>
 
-  return <></>;
+        <label>
+          Time of event:
+          <input
+            placeholder="08:00"
+            type={'text'}
+            {...register('time', {
+              required: 'This field is required',
+            })}
+          />
+          <p style={{ padding: 0, margin: 0 }}>
+            {errors.time?.message as string}
+          </p>
+        </label>
+        <button type="submit">Calculate</button>
+      </form>
+    </>
+  );
 };
