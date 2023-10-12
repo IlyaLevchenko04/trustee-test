@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+li,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  padding: 0;
+  margin: 0;
+}
+
+div {
+  padding: 0;
+  margin: 0;
+  color: #fff;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #12161f;
+}
+
+img {
+  padding: 0;
+  margin: 0;
+}
+
+.header-nav-list {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  height: 80px;
+  padding: 12px;
+  justify-content: flex-end;
+  background-color: #11151b;
+}
+
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-bottom: 36px;
+}
+
+.homepage-header {
+  font-family: sans-serif;
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1.36;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.homepage-text {
+  margin: 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.87;
+}
+
+.broadcasting-list {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+.broadcasting-sessions-list {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.56;
+  letter-spacing: 0.03em;
+}
+
+.info-list-container {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.56;
+  letter-spacing: 0.03em;
+  color: #fff;
+  position: absolute;
+  background-color: rgba(62, 63, 65, 0.75);
+  width: 100%;
+  height: 100%;
+  top: 100%;
+  transition-property: top;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  align-items: center;
+  gap: 24px;
+}
+
+.broadcasting-item {
+  position: relative;
+}
+
+.broadcasting-item:hover .info-list-container {
+  top: 75%;
+  z-index: 2;
+}
+
+.broadcasting-list {
+  position: relative;
+  overflow: hidden;
+}
+
+.broadcasting-img {
+  border-radius: 3px;
+  height: 100%;
+}
+
+.broadcasting-header {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.56;
+}
+
+.age-span {
+  background-color: #fff;
+  color: black;
+  border-radius: 5px;
+  padding: 4px;
+}
+
+.nav-link {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.56;
+  letter-spacing: 0.03em;
+  transition-property: color;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
