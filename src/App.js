@@ -3,7 +3,7 @@ import { Homepage } from './pages/homepage';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './sections/header';
 import { MovieHelper } from './pages/movieHelper';
-import { NotFound } from './components/notFound';
+import { NotFound } from './pages/notFound';
 
 export const App = () => {
   return (

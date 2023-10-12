@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import { sendToast } from '../helpers/toastify';
+import { useAvailableSessions } from '../hooks/useAvailebleSesions';
+import { broadcastingFilms } from '../constants';
 
 export const EventForm = () => {
   const { handleSubmit, control, reset, formState } = useForm();
@@ -54,6 +56,8 @@ export const EventForm = () => {
     const end = new Date(0, 0, 0, endHour, endMinute);
     return start < end;
   };
+
+  console.log(useAvailableSessions(events, broadcastingFilms));
 
   return (
     <div className="w-1/3 mx-auto mt-8">
