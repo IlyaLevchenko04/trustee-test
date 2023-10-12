@@ -24,7 +24,7 @@ export const EventForm = () => {
     localStorage.setItem('events', JSON.stringify(updatedEvents));
   };
 
-  const onSubmit = ({ timeEnd, timeStart }) => {
+  const onSubmit = ({ timeEnd, timeStart, title }) => {
     if (!isValidTimeFormat(timeStart) || !isValidTimeFormat(timeEnd)) {
       reset();
       return sendToast('Invalid time format. Please use HH:mm.');
@@ -35,7 +35,7 @@ export const EventForm = () => {
       return sendToast('End Time should be after Start Time.');
     }
 
-    const newEvent = { id: nanoid(), timeEnd, timeStart };
+    const newEvent = { id: nanoid(), timeEnd, timeStart, title };
     setEvents([...events, newEvent]);
     const stringEvents = JSON.stringify([...events, newEvent]);
     localStorage.setItem('events', stringEvents);
@@ -135,7 +135,7 @@ export const EventForm = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-250 ease-in-out transform hover:scale-105"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-250 ease-in-out transform"
             type="submit"
           >
             Create Event
@@ -162,14 +162,16 @@ export const EventForm = () => {
         ))}
       </ul>
 
-      <div className="flex justify-center">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-250 ease-in-out transform hover:scale-105"
-          onClick={() => console.log(events)}
-        >
-          Calculate
-        </button>
-      </div>
+      {events.length > 0 && (
+        <div className="flex justify-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-250 ease-in-out transform "
+            onClick={() => console.log(events)}
+          >
+            Calculate
+          </button>
+        </div>
+      )}
     </div>
   );
 };
