@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { dateFormat } from '../helpers/dateFormat.helper';
 
-export const BroadcastingItem = ({ filmsArr }) => {
+export const ModalItem = ({ filmsArr }) => {
   return filmsArr.map(({ id, posterURL, title, age, sessions }) => {
     return (
       <li
@@ -22,7 +22,7 @@ export const BroadcastingItem = ({ filmsArr }) => {
           </h3>
           <ul className="broadcasting-sessions-list flex gap-4">
             {sessions.map(s => {
-              return <li key={nanoid()}>{dateFormat(s)}</li>;
+              return <li key={nanoid()}>{dateFormat(s.timeStart)}</li>;
             })}
           </ul>
         </div>

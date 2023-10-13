@@ -2,19 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import { sendToast } from '../helpers/toastify';
-import { useAvailableSessions } from '../hooks/useAvailebleSesions';
+import {
+  convertTimeToCurrentDate,
+  shedulerHandler,
+} from '../helpers/scheduler';
 import { broadcastingFilms } from '../constants';
+import { dateFormat } from '../helpers/dateFormat.helper';
+import { Modal } from './modal';
 
 export const EventForm = () => {
   const { handleSubmit, control, reset, formState } = useForm();
   const { errors } = formState;
   const [events, setEvents] = useState([]);
+  const [isModal, setModal] = useState(false);
+  const [movies, setMovies] = useState({});
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
 
   useEffect(() => {
     const localEvents = localStorage.getItem('events') || false;
     if (localEvents) {
       const parsedEvents = JSON.parse(localEvents);
-      setEvents([...parsedEvents]);
+      setEvents(
+        [...parsedEvents].map(e => {
+          return {
+            ...e,
+            timeEnd: new Date(e.timeEnd),
+            timeStart: new Date(e.timeStart),
+          };
+        })
+      );
     } else {
       setEvents([]);
     }
@@ -37,7 +55,12 @@ export const EventForm = () => {
       return sendToast('End Time should be after Start Time.');
     }
 
-    const newEvent = { id: nanoid(), timeEnd, timeStart, title };
+    const newEvent = {
+      id: nanoid(),
+      timeStart: convertTimeToCurrentDate(timeStart),
+      timeEnd: convertTimeToCurrentDate(timeEnd),
+      title,
+    };
     setEvents([...events, newEvent]);
     const stringEvents = JSON.stringify([...events, newEvent]);
     localStorage.setItem('events', stringEvents);
@@ -57,7 +80,13 @@ export const EventForm = () => {
     return start < end;
   };
 
-  console.log(useAvailableSessions(events, broadcastingFilms));
+  const onCalculate = () => {
+    const availableFilms = shedulerHandler(events, broadcastingFilms);
+
+    setMovies({ ...availableFilms });
+
+    openModal();
+  };
 
   return (
     <div className="w-1/3 mx-auto mt-8">
@@ -146,36 +175,38 @@ export const EventForm = () => {
           </button>
         </div>
       </form>
-
       <ul className="mt-4 grid grid-cols-2 gap-4 mb-4">
-        {events.map(({ id, timeStart, timeEnd, title }) => (
-          <li
-            key={id}
-            className="bg-#11151b border border-gray-300 shadow-md rounded mb-2 p-4 relative"
-          >
-            <h3 className="text-lg font-semibold">{title}</h3>
-            <p>Start Time: {timeStart}</p>
-            <p>End Time: {timeEnd}</p>
-            <button
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-              onClick={() => handleDeleteEvent(id)}
+        {events.map(({ id, timeStart, timeEnd, title }) => {
+          return (
+            <li
+              key={id}
+              className="bg-#11151b border border-gray-300 shadow-md rounded mb-2 p-4 relative"
             >
-              X
-            </button>
-          </li>
-        ))}
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p>Start Time: {dateFormat(timeStart)}</p>
+              <p>End Time: {dateFormat(timeEnd)}</p>
+              <button
+                className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                onClick={() => handleDeleteEvent(id)}
+              >
+                X
+              </button>
+            </li>
+          );
+        })}
       </ul>
 
       {events.length > 0 && (
         <div className="flex justify-center">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-250 ease-in-out transform "
-            onClick={() => console.log(events)}
+            onClick={() => onCalculate()}
           >
             Calculate
           </button>
         </div>
       )}
+      {isModal && <Modal onClose={closeModal} sessionsAv={movies} />}
     </div>
   );
 };

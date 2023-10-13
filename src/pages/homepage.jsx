@@ -2,10 +2,8 @@ import React from 'react';
 import { WelcomeContainer } from '../components/welcome';
 import { BroadcastingItem } from '../components/broadcastingItem';
 import { broadcastingFilms } from '../constants';
-import { shedulerHandler } from '../helpers/scheduler';
 
 export const Homepage = () => {
-  shedulerHandler();
   return (
     <>
       <WelcomeContainer />

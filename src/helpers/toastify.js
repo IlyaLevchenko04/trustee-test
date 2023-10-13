@@ -8,11 +8,11 @@ export const sendToast = text =>
     destination: 'https://github.com/apvarun/toastify-js',
     newWindow: true,
     close: true,
-    gravity: 'top', // `top` or `bottom`
-    position: 'left', // `left`, `center` or `right`
-    stopOnFocus: true, // Prevents dismissing of toast on hover
+    gravity: 'top',
+    position: 'left',
+    stopOnFocus: true,
     style: {
-      background: 'linear-gradient(to right, #00b09b, #96c93d)',
+      background: 'linear-gradient(to right, #DC143C, #FF6347)',
     },
-    onClick: function () {}, // Callback after click
+    onClick: function () {},
   }).showToast();
