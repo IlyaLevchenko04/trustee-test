@@ -1,4 +1,4 @@
-# Movie Showtime Recommender App
+# MovieHelper App
 
 ## Опис
 
