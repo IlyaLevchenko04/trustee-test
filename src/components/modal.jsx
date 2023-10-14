@@ -1,5 +1,5 @@
 import { broadcastingFilms } from '../constants';
-import { ModalItem } from './modalItem';
+import { FilmItem } from './filmItem';
 
 export const Modal = ({ onClose, sessionsAv }) => {
   const sessionsIds = Object.keys(sessionsAv);
@@ -27,7 +27,7 @@ export const Modal = ({ onClose, sessionsAv }) => {
           You can watch this films at this time:
         </h3>
         <ul className="flex overflow-hidden gap-4">
-          {<ModalItem filmsArr={allMovies} />}
+          {<FilmItem isModal filmsArr={allMovies} />}
         </ul>
       </div>
     </div>

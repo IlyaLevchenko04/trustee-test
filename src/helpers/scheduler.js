@@ -1,8 +1,8 @@
-import addMinutes from 'date-fns/addMinutes';
+import addMinutes from "date-fns/addMinutes";
 
 export function convertTimeToCurrentDate(inputTime, addedHours) {
   const now = new Date();
-  const [hours, minutes] = inputTime.split(':').map(Number);
+  const [hours, minutes] = inputTime.split(":").map(Number);
 
   const targetTimezoneOffset = 0;
 
@@ -21,7 +21,7 @@ export function shedulerHandler(events, films) {
   const sessionsArray = [];
 
   films.forEach(({ id, sessions, duration }) => {
-    sessions.forEach(s => {
+    sessions.forEach((s) => {
       const hours = duration % 60;
       now.setHours(hours);
 
@@ -36,14 +36,13 @@ export function shedulerHandler(events, films) {
   const result = {};
 
   sessionsArray
-    .filter(s => {
-      return events.every(e => {
-        return (
+    .filter((s) =>
+      events.every(
+        (e) =>
           s.timeEnd < addMinutes(e.timeStart, -30) ||
           s.timeStart > addMinutes(e.timeEnd, 30)
-        );
-      });
-    })
+      )
+    )
     .forEach(({ id, timeStart, timeEnd }) => {
       if (Object.keys(result).includes(id)) {
         result[id].push({ timeStart, timeEnd });
