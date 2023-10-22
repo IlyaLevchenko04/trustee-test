@@ -14,19 +14,16 @@ export const Modal = ({ onClose, sessionsAv }) => {
     return allMovies.push(newFilm);
   });
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto">
-      <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="relative bg-white  p-12 rounded-lg shadow-lg">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-4 text-gray-600 hover:text-gray-800 "
-        >
+    <div className="modal-container">
+      <div className="modal-backdrop"></div>
+      <div className="modal">
+        <button onClick={onClose} className="modal-close">
           X
         </button>
         <h3 className="text-black font-bold">
           You can watch this films at this time:
         </h3>
-        <ul className="flex overflow-hidden gap-4">
+        <ul className="modal-list">
           {<FilmItem isModal filmsArr={allMovies} />}
         </ul>
       </div>
