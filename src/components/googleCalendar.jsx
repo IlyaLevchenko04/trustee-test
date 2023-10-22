@@ -9,6 +9,10 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
     console.log(isSignedIn);
   }
 
+  if (accessToken && expiresIn !== '') {
+    setIsSignedIn(() => true);
+  }
+
   const gapi = window.gapi;
   const google = window.google;
 
@@ -138,7 +142,7 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
           onClick={handleAuthClick}
           className="google-authorize"
         >
-          Authorize
+          Authorize with Google
         </button>
       )}
       {isSignedIn && (

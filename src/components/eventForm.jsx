@@ -369,7 +369,7 @@ export const EventForm = () => {
         setIsSignedIn={setIsSignedIn}
         events={events}
       />
-      {events.length > 0 && isSignedIn && (
+      {events.length > 0 && (
         <div className="convert-container">
           <button className="convert-btn" onClick={onCalculate}>
             Calculate
