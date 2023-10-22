@@ -12,6 +12,7 @@ import { Modal } from './modal';
 import { GoogleCalendar } from './googleCalendar';
 
 export const EventForm = () => {
+  const gapi = window.gapi;
   const { handleSubmit, control, reset, formState, getValues } = useForm();
   const { errors } = formState;
   const [events, setEvents] = useState([]);
