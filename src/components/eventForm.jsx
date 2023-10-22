@@ -79,46 +79,52 @@ export const EventForm = () => {
     };
 
     setEvents([...events, newEvent]);
-    console.log('ISO', newEvent.timeStart.toISOStringWithTimezone());
-    var event = {
-      kind: 'calendar#event',
-      summary: newEvent.title,
-      location: newEvent.location,
-      description: newEvent.description,
-      start: {
-        // dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
-        dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
-        timeZone: 'UTC',
-      },
-      end: {
-        dateTime: newEvent.timeEnd.toISOStringWithTimezone().split('+')[0],
-        timeZone: 'UTC',
-      },
-      recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
-      attendees: newEvent.emails.map(email => ({
-        email,
-        responseStatus: 'needsAction',
-      })),
-      reminders: {
-        useDefault: true,
-      },
-      guestsCanSeeOtherGuests: true,
-    };
-    var request = gapi.client.calendar.events.insert({
-      calendarId: 'primary',
-      resource: event,
-      sendUpdates: 'all',
-    });
-    request.execute(
-      event => {
-        console.log(event);
-        window.open(event.htmlLink);
-      },
-      error => {
-        console.error(error);
-      }
-    );
 
+    if (isSignedIn) {
+      console.log('ISO', newEvent.timeStart.toISOStringWithTimezone());
+      var event = {
+        kind: 'calendar#event',
+        summary: newEvent.title,
+        location: newEvent.location,
+        description: newEvent.description,
+        start: {
+          // dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
+          dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
+          timeZone: 'UTC',
+        },
+        end: {
+          dateTime: newEvent.timeEnd.toISOStringWithTimezone().split('+')[0],
+          timeZone: 'UTC',
+        },
+        recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
+        attendees: newEvent.emails.map(email => ({
+          email,
+          responseStatus: 'needsAction',
+        })),
+        reminders: {
+          useDefault: true,
+        },
+        guestsCanSeeOtherGuests: true,
+      };
+      var request = gapi.client.calendar.events.insert({
+        calendarId: 'primary',
+        resource: event,
+        sendUpdates: 'all',
+      });
+      request.execute(
+        event => {
+          console.log(event);
+          window.open(event.htmlLink);
+        },
+        error => {
+          console.error(error);
+        }
+      );
+      reset();
+      setEmails([]);
+      return;
+    }
+    setEmails([]);
     reset();
   };
 

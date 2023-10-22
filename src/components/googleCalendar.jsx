@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
+import { sendToast } from '../helpers/toastify';
 
 export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
   const accessToken = localStorage.getItem('access_token' || '');
@@ -64,6 +65,11 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
   }
 
   function handleAuthClick() {
+    // if (!tokenClient) {
+    //   sendToast('Google API error');
+
+    // }
+
     if (tokenClient) {
       console.log(tokenClient);
       tokenClient.callback = async resp => {
