@@ -5,8 +5,7 @@ export const broadcastingFilms = [
   {
     title: 'Щенячий патруль',
     id: nanoid(),
-    posterURL:
-      'https://smartcinema.ua//media/img/schenjachij-patrul-megakno/poster.jpeg',
+    posterURL: 'https://kinogo.media/uploads/posts/2023-06/orig.jpg',
     age: '0+',
     sessions: ['14:00', '15:00', '17:30', '19:00'],
     duration: 180,
@@ -67,3 +66,6 @@ export const eventsConst = [
 
   return result;
 });
+
+export const description =
+  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, nisi unde laudantium, amet sunt facilis totam minima, enim culpa accusamus sequi eaque officiis consequuntur voluptate animi nemo illo molestias illum.';
