@@ -15,13 +15,15 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
     REACT_APP_GOOGLE_CLIENT_SECRET,
   } = process.env;
 
-  const CLIENT_ID = REACT_APP_GOOGLE_CLIENT_ID;
-  const API_KEY = REACT_APP_GOOGLE_API_KEY;
+  const CLIENT_ID =
+    '438594569831-vof1b2fjmu01vnp37senhuqf2eh1s4id.apps.googleusercontent.com';
+  const API_KEY = 'AIzaSyBffN1XPuX-mNFUtYsV01WhI1_ZsJc_xpo';
   const DISCOVERY_DOC =
     'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
   console.log(gisIsLoaded);
+  console.log(REACT_APP_GOOGLE_CLIENT_ID, '  T  ', REACT_APP_GOOGLE_API_KEY);
 
   useEffect(() => {
     if (!gisIsLoaded) {
