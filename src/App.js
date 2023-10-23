@@ -7,7 +7,7 @@ import { NotFound } from './pages/notFound';
 import { FilmPage } from './pages/filmPage';
 
 Date.prototype.toISOStringWithTimezone = function () {
-  const tzOffset = -this.getTimezoneOffset();
+  const tzOffset = -this.getTimezoneOffset() / 60;
   const diff = tzOffset >= 0 ? '+' : '-';
   const pad = n => `${Math.floor(Math.abs(n))}`.padStart(2, '0');
   return (
@@ -17,15 +17,12 @@ Date.prototype.toISOStringWithTimezone = function () {
     '-' +
     pad(this.getDate()) +
     'T' +
-    pad(this.getHours()) +
+    pad(this.getHours() - tzOffset) +
     ':' +
     pad(this.getMinutes()) +
     ':' +
     pad(this.getSeconds()) +
-    diff +
-    pad(tzOffset / 60) +
-    ':' +
-    pad(tzOffset % 60)
+    '.000Z'
   );
 };
 

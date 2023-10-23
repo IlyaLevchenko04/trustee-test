@@ -1,21 +1,19 @@
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
-import { sendToast } from '../helpers/toastify';
+import { accessToken, expiresIn } from '../constants';
 
 export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
-  const accessToken = localStorage.getItem('access_token' || '');
-  const expiresIn = localStorage.getItem('expires_in' || '');
-
-  if (isSignedIn) {
-    console.log(isSignedIn);
-  }
-
-  if (accessToken && expiresIn !== '') {
-    setIsSignedIn(() => true);
-  }
+  let tokenClient;
+  const [gisIsLoaded, setGisIsLoaded] = useState(false);
 
   const gapi = window.gapi;
   const google = window.google;
+
+  const {
+    REACT_APP_GOOGLE_API_KEY,
+    REACT_APP_GOOGLE_CLIENT_ID,
+    REACT_APP_GOOGLE_CLIENT_SECRET,
+  } = process.env;
 
   const CLIENT_ID =
     '438594569831-vof1b2fjmu01vnp37senhuqf2eh1s4id.apps.googleusercontent.com';
@@ -24,15 +22,16 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
     'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
-  let gapiInited = false,
-    gisInited = false,
-    tokenClient;
+  console.log(gisIsLoaded);
+  console.log(REACT_APP_GOOGLE_CLIENT_ID, '  T  ', REACT_APP_GOOGLE_API_KEY);
 
   useEffect(() => {
-    //const expiryTime = new Date().getTime() + expiresIn * 1000;
-    gapiLoaded();
-    gisLoaded();
-  }, []);
+    if (!gisIsLoaded) {
+      console.log('1');
+      gapiLoaded();
+      gisLoaded();
+    }
+  }, [gapiLoaded, gisLoaded, gisIsLoaded]);
 
   function gapiLoaded() {
     gapi.load('client', initializeGapiClient);
@@ -43,7 +42,8 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       apiKey: API_KEY,
       discoveryDocs: [DISCOVERY_DOC],
     });
-    gapiInited = true;
+
+    console.log(accessToken, expiresIn);
 
     if (accessToken && expiresIn) {
       gapi.client.setToken({
@@ -51,6 +51,7 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
         expires_in: expiresIn,
       });
       listUpcomingEvents();
+      setGisIsLoaded(true);
     }
   }
 
@@ -60,8 +61,6 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       scope: SCOPES,
       callback: '',
     });
-
-    gisInited = true;
   }
 
   function handleAuthClick() {
@@ -136,6 +135,8 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
         id: nanoid(),
       };
     });
+
+    console.log(newEvents);
 
     setEvents(newEvents);
   }

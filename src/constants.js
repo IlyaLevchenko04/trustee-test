@@ -1,6 +1,9 @@
 import { nanoid } from 'nanoid';
 import { convertTimeToCurrentDate } from './helpers/scheduler';
 
+export const accessToken = localStorage.getItem('access_token' || '');
+export const expiresIn = localStorage.getItem('expires_in' || '');
+
 export const broadcastingFilms = [
   {
     title: 'Щенячий патруль',
