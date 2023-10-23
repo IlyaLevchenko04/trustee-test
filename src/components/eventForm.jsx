@@ -6,7 +6,7 @@ import {
   convertTimeToCurrentDate,
   shedulerHandler,
 } from '../helpers/scheduler';
-import { broadcastingFilms } from '../constants';
+import { accessToken, broadcastingFilms, expiresIn } from '../constants';
 import { dateFormat } from '../helpers/dateFormat';
 import { Modal } from './modal';
 import { GoogleCalendar } from './googleCalendar';
@@ -19,7 +19,7 @@ export const EventForm = () => {
   const [isModal, setModal] = useState(false);
   const [movies, setMovies] = useState({});
   const [emails, setEmails] = useState([]);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(accessToken && expiresIn);
 
   const openModal = () => setModal(true);
   const closeModal = () => setModal(false);
