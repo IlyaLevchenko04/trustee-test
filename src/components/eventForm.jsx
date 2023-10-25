@@ -7,7 +7,6 @@ import {
   shedulerHandler,
 } from '../helpers/scheduler';
 import { accessToken, broadcastingFilms, expiresIn } from '../constants';
-import { dateFormat } from '../helpers/dateFormat';
 import { Modal } from './modal';
 import { GoogleCalendar } from './googleCalendar';
 import { EventCard } from './eventCard';
@@ -50,14 +49,7 @@ export const EventForm = () => {
     setEvents(updatedEvents);
   };
 
-  const onSubmit = ({
-    timeEnd,
-    timeStart,
-    summary,
-    description,
-    location,
-    attendeeEmail,
-  }) => {
+  const onSubmit = ({ timeEnd, timeStart, summary, description, location }) => {
     if (!isValidTimeFormat(timeStart) || !isValidTimeFormat(timeEnd)) {
       reset();
       return sendToast('Invalid time format. Please use HH:mm.');
@@ -88,7 +80,6 @@ export const EventForm = () => {
         location: newEvent.location,
         description: newEvent.description,
         start: {
-          // dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
           dateTime: newEvent.timeStart.toISOStringWithTimezone().split('+')[0],
           timeZone: 'UTC',
         },
