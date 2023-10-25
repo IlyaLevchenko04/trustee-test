@@ -24,7 +24,6 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
 
   useEffect(() => {
     if (!gisIsLoaded) {
-      console.log('1');
       gapiLoaded();
       gisLoaded();
     }
@@ -118,11 +117,8 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       document.getElementById('content').innerText = 'No events found.';
       return;
     }
-    const today = new Date();
+    const today = new Date().toISOString().split('T');
 
-    console.log(
-      new Date(events[8].start.dateTime).toDateString() === today.toDateString()
-    );
     const newEvents = events.map(({ end, start, summary }) => {
       return {
         timeStart: new Date(start.dateTime),
@@ -135,17 +131,15 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
 
     const withoutAllDay = newEvents.filter(({ allDay }) => allDay === false);
 
-    // console.log(newEvents[4].timeStart.toISOString().split('T')[0]);
-
-    console.log(withoutAllDay.filter);
-
-    console.log(
-      newEvents.filter(
-        ev => new Date(ev.timeStart).toDateString() !== today.toDateString()
-      )
+    const todayEvs = withoutAllDay.filter(
+      ({ timeStart }) => timeStart.toISOString().split('T')[0] === today[0]
     );
-    console.log(newEvents);
-    setEvents(newEvents);
+
+    const allDayEvs = newEvents.filter(({ allDay }) => allDay === true);
+
+    const onlyTodayEvents = [...allDayEvs, ...todayEvs];
+
+    setEvents(onlyTodayEvents);
   }
 
   return (
