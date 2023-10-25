@@ -22,9 +22,6 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
     'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
   const SCOPES = 'https://www.googleapis.com/auth/calendar';
 
-  console.log(gisIsLoaded);
-  console.log(REACT_APP_GOOGLE_CLIENT_ID, '  T  ', REACT_APP_GOOGLE_API_KEY);
-
   useEffect(() => {
     if (!gisIsLoaded) {
       console.log('1');
@@ -64,11 +61,6 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
   }
 
   function handleAuthClick() {
-    // if (!tokenClient) {
-    //   sendToast('Google API error');
-
-    // }
-
     if (tokenClient) {
       console.log(tokenClient);
       tokenClient.callback = async resp => {
@@ -126,9 +118,11 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       document.getElementById('content').innerText = 'No events found.';
       return;
     }
+    const today = new Date();
 
-    console.log(events);
-
+    console.log(
+      new Date(events[8].start.dateTime).toDateString() === today.toDateString()
+    );
     const newEvents = events.map(({ end, start, summary }) => {
       return {
         timeStart: new Date(start.dateTime),
@@ -139,8 +133,18 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       };
     });
 
-    console.log(newEvents);
+    const withoutAllDay = newEvents.filter(({ allDay }) => allDay === false);
 
+    // console.log(newEvents[4].timeStart.toISOString().split('T')[0]);
+
+    console.log(withoutAllDay.filter);
+
+    console.log(
+      newEvents.filter(
+        ev => new Date(ev.timeStart).toDateString() !== today.toDateString()
+      )
+    );
+    console.log(newEvents);
     setEvents(newEvents);
   }
 
