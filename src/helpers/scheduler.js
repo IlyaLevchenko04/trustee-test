@@ -37,11 +37,13 @@ export function shedulerHandler(events, films) {
 
   sessionsArray
     .filter(s =>
-      events.every(
-        e =>
-          s.timeEnd < addMinutes(e.timeStart, -30) ||
-          s.timeStart > addMinutes(e.timeEnd, 30)
-      )
+      events
+        .filter(e => !e.allDay)
+        .every(
+          e =>
+            s.timeEnd < addMinutes(e.timeStart, -30) ||
+            s.timeStart > addMinutes(e.timeEnd, 30)
+        )
     )
     .forEach(({ id, timeStart, timeEnd }) => {
       if (Object.keys(result).includes(id)) {

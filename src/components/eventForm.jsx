@@ -10,6 +10,7 @@ import { accessToken, broadcastingFilms, expiresIn } from '../constants';
 import { dateFormat } from '../helpers/dateFormat';
 import { Modal } from './modal';
 import { GoogleCalendar } from './googleCalendar';
+import { EventCard } from './eventCard';
 
 export const EventForm = () => {
   const gapi = window.gapi;
@@ -47,7 +48,6 @@ export const EventForm = () => {
   const handleDeleteEvent = eventId => {
     const updatedEvents = events.filter(event => event.id !== eventId);
     setEvents(updatedEvents);
-    localStorage.setItem('events', JSON.stringify(updatedEvents));
   };
 
   const onSubmit = ({
@@ -78,7 +78,7 @@ export const EventForm = () => {
       emails,
     };
 
-    setEvents([...events, newEvent]);
+    setEvents([...new Set([...events, newEvent])]);
 
     if (isSignedIn) {
       console.log('ISO', newEvent.timeStart.toISOStringWithTimezone());
@@ -155,8 +155,6 @@ export const EventForm = () => {
     const updatedEmails = emails.filter(email => email !== textContent[0]);
 
     setEmails([...updatedEmails]);
-
-    return;
   };
 
   return (
@@ -353,21 +351,17 @@ export const EventForm = () => {
         </div>
       </form>
       <ul className="events-list">
-        {events.map(({ id, timeStart, timeEnd, title }) => {
-          return (
-            <li key={id} className="events-item">
-              <h3 className="events-item-header">{title}</h3>
-              <p>Start Time: {dateFormat(timeStart)}</p>
-              <p>End Time: {dateFormat(timeEnd)}</p>
-              <button
-                className="close-btn"
-                onClick={() => handleDeleteEvent(id)}
-              >
-                X
-              </button>
-            </li>
-          );
-        })}
+        {events.map(event => (
+          <EventCard
+            key={event.id}
+            handleDeleteEvent={handleDeleteEvent}
+            title={event.title}
+            allDay={event.allDay}
+            timeStart={event.timeStart}
+            timeEnd={event.timeEnd}
+            id={event.id}
+          />
+        ))}
       </ul>
       <GoogleCalendar
         setEvents={setGoogleEvents}

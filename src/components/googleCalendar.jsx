@@ -127,10 +127,13 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       return;
     }
 
+    console.log(events);
+
     const newEvents = events.map(({ end, start, summary }) => {
       return {
         timeStart: new Date(start.dateTime),
         timeEnd: new Date(end.dateTime),
+        allDay: !start.dateTime,
         title: summary,
         id: nanoid(),
       };
