@@ -36,6 +36,14 @@ export function shedulerHandler(events, films) {
   const result = {};
 
   sessionsArray
+    .filter(
+      ({ timeStart }) =>
+        timeStart.getTime() >
+        convertTimeToCurrentDate(
+          `${new Date().getHours()}:${new Date().getMinutes()}`,
+          0
+        ).getTime()
+    )
     .filter(s =>
       events
         .filter(e => !e.allDay)

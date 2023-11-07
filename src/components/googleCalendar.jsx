@@ -39,8 +39,6 @@ export const GoogleCalendar = ({ setEvents, setIsSignedIn, isSignedIn }) => {
       discoveryDocs: [DISCOVERY_DOC],
     });
 
-    console.log(accessToken, expiresIn);
-
     if (accessToken && expiresIn) {
       gapi.client.setToken({
         access_token: accessToken,
